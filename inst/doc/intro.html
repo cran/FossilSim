@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Joelle Barido-Sottani, Rachel C. M. Warnock" />
+
+<meta name="date" content="2018-07-23" />
+
+<title>The FossilSim package</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">The FossilSim package</h1>
+<h4 class="author"><em>Joelle Barido-Sottani, Rachel C. M. Warnock</em></h4>
+<h4 class="date"><em>2018-07-23</em></h4>
+
+
+
+<p>This vignette provides a <a href="#quick-start">Quick start</a> and a brief introduction to the package input and output.</p>
+<div id="contents" class="section level2">
+<h2>Contents</h2>
+<ul>
+<li><a href="#background-and-motivation">Background and motivation</a></li>
+<li><a href="#installing-the-package">Installing the package</a></li>
+<li><a href="#quick-start">Quick start</a></li>
+<li><a href="#fossilsim-input">FossilSim input</a></li>
+<li><a href="#fossilsim-output">FossilSim output</a></li>
+<li><a href="#what-next">What next?</a></li>
+</ul>
+</div>
+<div id="background-and-motivation" class="section level2">
+<h2>Background and motivation</h2>
+<p><code>FossilSim</code> is an R package for simulating species taxonomy and fossil occurrence data in a phylogenetic framework. Simulations can be used to address many questions in phylogenetics and palaeobiology, and are especially useful for assessing the performance of different methods, since the true underlying parameters (e.g. diversification and fossil recovery rates) are known. Tara Smiley provides an excellent demonstration of the value of simulations in palaeobiology in this <a href="http://blog.journals.cambridge.org/2018/03/19/testing-the-fossil-record-how-simulations-help-us-understand-the-relative-roles-of-diversification-and-preservation-underlying-diversity-gradients-in-deep-time/">blog post</a>. <code>FossilSim</code> output can be easily parsed for downstream analysis using R, or other software packages including <a href="http://beast2.org/">BEAST2</a> and <a href="https://revbayes.github.io">RevBayes</a>. The package provides a wide range of flexible models, including models of interval-, lineage- and environment-dependent fossil recovery, in addition to plotting functions that can be used to visualise the output and produce publication quality figures.</p>
+</div>
+<div id="installing-the-package" class="section level2">
+<h2>Installing the package</h2>
+<p><code>FossilSim</code> is available on CRAN or the latest development version can be installed from <a href="http://github.com/">GitHub</a> using the package <code>devtools</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># to install the package via CRAN</span>
+<span class="kw">install.packages</span>(<span class="st">&quot;FossilSim&quot;</span>)
+
+<span class="co"># to install the package via GitHub</span>
+devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;rachelwarnock/fossilsim&quot;</span>)
+
+<span class="co"># load the package into the current working environment</span>
+<span class="kw">library</span>(FossilSim)</code></pre></div>
+<div id="package-dependencies" class="section level3">
+<h3>Package dependencies</h3>
+<p>The installation above will automatically install the package dependencies, <code>ape</code> and <code>TreeSim</code>.</p>
+</div>
+<div id="calling-functions-from-fossilsim-and-other-packages" class="section level3">
+<h3>Calling functions from FossilSim and other packages</h3>
+<p>Once the package is loaded into your current working environment you can call the package functions directly, e.g. <code>sim.fossils.poisson()</code>. It is also possible to call functions in R without loading the package into your working environment, e.g. <code>FossilSim::sim.fossils.poisson()</code>. Throughout this vignette and other documentation associated with <code>FossilSim</code>, we call the <code>FossilSim</code> functions from the current working environment but use the <code>::</code> format to call functions from other packages. This is done to make the source of all functions as clear as possible.</p>
+</div>
+<div id="quick-start" class="section level3">
+<h3>Quick start</h3>
+<p>Simulating data using <code>FossilSim</code> can be as simple as the following code snippets.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># simulate a tree using ape</span>
+tips =<span class="st"> </span><span class="dv">8</span>
+t =<span class="st"> </span>ape<span class="op">::</span><span class="kw">rtree</span>(tips)
+<span class="co"># simulate fossils using fossilsim</span>
+rate =<span class="st"> </span><span class="dv">2</span>
+f =<span class="st"> </span><span class="kw">sim.fossils.poisson</span>(rate, t)  
+<span class="co"># plot the output</span>
+<span class="kw">plot</span>(f, t)</code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAMAAABKCk6nAAAASFBMVEUAAAC/v7+/v9W/1erKv9XKyuDK4PTVv7/Vv8rVv9XV6v/gysrgytXg9P/q1b/q/+rq///04Mr0////6tX/9OD//+r///T///8FAlgGAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAH40lEQVR4nO3d21pURxRF4U0O5qjRKPL+bxqhsSN8ClTXqs1cY4//wsQLtlVzRERpzHYjtO21D6C1DAxnYDgDwxkYzsBwBoYzMJyB4QwMZ2A4A8MZGM7AcAaGMzCcgeEMDGdgOAPDGRjOwHAGhjMwnIHhDAxnYDgDwxkYzsBwBoYzMJyB4QwMZ2A4A8MZGM7AcAaGMzCcgeEMDGdgOAPDGRjOwHAGhjMwnIHhDAxnYDgDwxkYzsBwBoYzMJyB4QwMZ2A4A8MZGM7AcAaGMzCcgeEMDGdgOAPDGRjOwHAGhjMwnIHhDAxnYDgDwxkYzsBwBoYzMJyB4QwMZ2A4A8MZGI4beONebQR2hW2z8C3qCNtm4TvQDbZnvPb59kO96uFC/gh1Avveo26w3dj3DnWEjXu1MdQVqPcaRh2Ceq9h1CGo9xpGHYJ6r2HUIaj3GkYdgnqvYdQhqPcaRh2Ceq9h1CGo9xpGHYJ6r2HUIaj3GkYdgnqvYflDnE849Nmh/HvtJH6I82f9xj6/G3+vvaQPcf68/eBn8NPvtZvwIc6vvBl9MVX4vfaTPMRzr5zzZXUvkDzE9u07Zt9FXyZ5iNuz/V/VD7IukjzE/c/c83f9bdIFkoeYOVvyvXaVPISBCyQPYeACyUMYuEDyEAYukDyEgQskD2HgAslDGLhA8hAGLpA8hIELJA9h4ALJQxi4QPIQBi6QPISBCyQPYeACyUMYuEDyEFOBfdnWSfItk8/WRvKIyWdrI3nE5LO1kTxi8tnaSB4x+WxtJI+YfLY2kkdMPlsbySMmn62N5BGTz9ZG8ojJZ2sjecTks7WRPGLy2dpIHjH5bG0kj5h8tjaSR0w+WxvJIyafrY3kEZPP1kbyiMlnayN5xOSztZE8YvLZ2th7xO3RD/nUj2/gAjuP+PjljE++ttHABfYd8fELVp9+9aqBC+w64uOXJD/z+mQDF1g64sV/k+iRXpm+2NrAj7/vz+Dd7RrYX4P3t29gP4re3c6B93xz3TIwnIHhDAxnYDgDwxkYzsBwBoYzMJyB4Q4X+Giflzxe4BUPDWZgOAPDGRjOwHAGhjMwnIHhDAxnYDgDwxkYzsBwBoYzMJyB4QwMZ2A4A8MZGM7AcAaGMzCcgeEMDNc58PBXJNy+gYFzHv7Mmw9/zcndGxg45+FPv/nwVxXxvw7pe9oGHv66sQN8odn3RAdeouZqbSQHfubhvot+ib6B/SDrRRoH9rdJL9E58EUSz7SSgeEMDGdgOAPDGRjOwHNPi/+DEwMHPW0FAwc9bQUDBz1tBQMHPW0FAwc9bQUDBz1tBQMHPW0FAwc9bQUDBz1tBQMHPW0FAwc9bQUDBz1tBQMHPW0FAwc9bQUDBz1tBQMHPW0FA1/6nK3yaesY+MLHnF7LkXjDhwx82VPuv8wp8YYPHS/wwb5W8XCBa/gzeP3DX5e/Bi9/+Cvzo+jVD4+Qf0MDT8m/oYGn5N/QwFPyb2jgKfk3NPCU/BsaeEr+DQ08Jf+GBp6Sf0MDT8m/oYGn5N/QwFPyb2jgKfk3NPCU/BsaeEr+DQ08Jf+GBp5S/AqvBS/5MjCcgeEMDGdgOAPDGRjOwHAGhjMwnIHhDAxnYDgDwxkYzsBwBoYzMJyB4QwMZ2A4A8MZGM7AcAaGMzCcgeEMDGdgOAPDGRjOwHAGhjMwnIHhDAxnYDgDwxkYzsBwyYG7/W8CI0UHrjnFsRkYzsBwBoYzMJyB4QwMZ2A4A8MZGM7AcAaGMzCcgeEMDGdgOAPDGRjOwHAGhjMwnIHhDAxnYDgDwxkYzsBwBoYzMNzawJNWnu0okkdMPlsbySMmn62N5BGTz9ZG8ojJZ2sjecTks7WRPGLy2dpIHjH5bG0kj5h8tjaSR0w+WxvJIz44m3/odZnkZbYffkcvlrybgQsk72bgAsm7GbhA8m4GLpC8m4ELJO9m4ALJuxm4QPJuBi6QvJuBCyTvZuACybsZuEDybgYukLybgQsk72bgAsm7GbhA8m4GLpC8m4ELJO9m4ALJu/mqqwJtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdmtz0DBtdvPvi7+MM8AZGM7AcAaGMzCcgeEMDGdgOAPDGRjOwHAGhjMwnIHhDAxnYDgDwxkYzsBwawNfac58gpWBX3sdgPkIawMvfPgRGBjOwHAGhjMwnIHhDAxnYDgDwxkYLj2wAhgYzsBwBoYzMJyB4QwMZ2A4A8MZGM7AcAaGMzCcgeEMDGdgOAPDLQj87urqz9O/Xf/x/vythn08DzmhPvDHn78mvf7tp/dfv9Ww69/ffvplerol76JPgT///c+Xf56+1bhPv/77+a+3s09ZEfiD76IrfHlXePNu+n30mg+y7s9l4BnJgT+8ufuHgWekvov+5j88A8+I/SDry2+T3pyqGnhK6G+TFMXAcAaGMzCcgeEMDGdgOAPDGRjOwHAGhjMwnIHhDAxnYDgDwxkYzsBwBoYzMJyB4QwMZ2A4A8MZGM7AcAaGMzCcgeEMDGdgOAPDGRjOwHAGhjMwnIHhDAxnYDgDwxkYzsBwBoYzMJyB4QwMZ2A4A8MZGM7AcAaGMzCcgeH+A9aaJDRMiutlAAAAAElFTkSuQmCC" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># simulate taxonomy using fossilsim</span>
+beta =<span class="st"> </span><span class="fl">0.5</span> <span class="co"># probability of symmetric speciation</span>
+lambda.a =<span class="st"> </span><span class="fl">0.1</span>  <span class="co"># rate of anagenesis</span>
+s =<span class="st"> </span><span class="kw">sim.taxonomy</span>(t, beta, lambda.a)  
+<span class="co"># plot the output</span>
+<span class="kw">plot</span>(s, t, <span class="dt">legend.position =</span> <span class="st">&quot;bottomright&quot;</span>)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>The package contains many options for simulating fossils and evaluating the output in a meaningful way requires understanding the underlying model parameters. Parsing the output for downstream analysis also requires becoming familiar with the <code>FossilSim</code> objects.</p>
+</div>
+</div>
+<div id="fossilsim-input" class="section level2">
+<h2>FossilSim input</h2>
+<p>The starting point for any data generation using <code>FossilSim</code> is a phylogenetic tree. <code>FossilSim</code> relies on the widely used <code>ape</code> package <code>phylo</code> object format for handling trees. The <code>phylo</code> object stores information about the relationship among branches in a phylogeny in a matrix called <code>edge</code> and branch lengths are stored in a vector called <code>edge.length</code>. The age of the tips and internal nodes can be reconstructed by combining information from the <code>edge</code> matrix and the <code>edge.length</code> vector. If the tree has a root edge (i.e. a branch leading to the root) the length of this edge is stored as a numeric variable called <code>root.edge</code>.</p>
+<p>There are a huge number of packages and options for simulating trees that can be used as input in <code>FossilSim</code>, including the <code>ape</code> and <code>TreeSim</code> R packages. An empirical phylogeny can also be used as input. The only general requirements are that trees are fully resolved and scaled to time.</p>
+</div>
+<div id="fossilsim-output" class="section level2">
+<h2>FossilSim output</h2>
+<p><code>FossilSim</code> can be used to simulate species taxonomy and fossil sampling times, which are stored and output as the <code>taxonomy</code> and <code>fossils</code> objects described in the <strong>“Simulating taxonomy”</strong> and <strong>“Simulating fossils” vignettes</strong>. The functions used to simulate fossils can take either a <code>phylo</code> <em>or</em> <code>taxonomy</code> object as input. This means, in theory, the user never has to interact with the <code>taxonomy</code> object when simulating fossil data. However, it may still be useful to become familiar with the concepts underlying the <code>taxonomy</code> object.</p>
+</div>
+<div id="what-next" class="section level2">
+<h2>What next?</h2>
+<p>Information about the <code>taxonomy</code> object and models for simulating taxonomy can be found in the vignette “Simulating taxonomy”. Information about the <code>fossils</code> object and models for simulating fossils can be found in the vignette “Simulating fossils”. See the <code>paleotree</code> vignette to see how <code>FossilSim</code> objects can be converted into <code>paleotree</code> objects.</p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
