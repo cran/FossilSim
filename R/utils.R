@@ -25,7 +25,7 @@ tree.max = function(tree, root.edge = TRUE){
   return(ba)
 }
 
-# Function to calculate node ages of a non-ultrametric tree using the TreeSim function getx
+# Function to calculate node ages of a non-ultrametric tree
 n.ages <- function(tree){
 
   depth = ape::node.depth.edgelength(tree)
@@ -225,12 +225,24 @@ count.fossils.binned = function(fossils, interval.ages){
 # Taxonomy functions
 ###########################################
 
-# find species start time in taxonomy obj
+#' Find a species' start (i.e speciation) time from a taxonomy object
+#'
+#' @param species Species id (as written in \code{taxonomy$sp}).
+#' @param taxonomy Taxonomy object.
+#' @return Start time.
+#'
+#' @export
 species.start = function(species, taxonomy){
   max(taxonomy$start[which(taxonomy$sp == species)])
 }
 
-# find species end time in taxonomy obj
+#' Find a species' end (i.e extinction) time from a taxonomy object
+#'
+#' @param species Species id (as written in \code{taxonomy$sp}).
+#' @param taxonomy Taxonomy object.
+#' @return End time.
+#'
+#' @export
 species.end = function(species, taxonomy){
   min(taxonomy$end[which(taxonomy$sp == species)])
 }
@@ -267,4 +279,15 @@ species.record.from.taxonomy = function(taxonomy) {
   spec$species.start = sapply(spec$sp, function(x) species.start(x, taxonomy))
   spec$species.end = sapply(spec$sp, function(x) species.end(x, taxonomy))
   spec
+}
+
+# function 'untangles' (or attempts to untangle) a tree with crossing branches
+# adapted from phytools
+untangle<-function(tree){
+  if(!inherits(tree,"phylo")) stop("tree should be an object of class \"phylo\".")
+  obj<-attributes(tree)
+  tree<-if(length(tree$tip.label)>1) ape::read.tree(text=ape::write.tree(tree)) else tree
+  ii<-!names(obj)%in%names(attributes(tree))
+  attributes(tree)<-c(attributes(tree),obj[ii])
+  tree
 }

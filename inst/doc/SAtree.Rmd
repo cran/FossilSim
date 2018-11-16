@@ -1,10 +1,10 @@
 ---
-title: "Exporting to zero-edge format"
+title: "Exporting sampled ancestor trees"
 author: "Joelle Barido-Sottani"
 date: "`r Sys.Date()`"
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{FossilSim}
+  %\VignetteIndexEntry{Exporting sampled ancestor trees}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -29,20 +29,9 @@ The `SAtree` format also includes a field `complete` which indicates whether the
 t = ape::rtree(6)
 f = sim.fossils.poisson(rate = 2, tree = t)
 
-SAt = SAtree.from.fossils(t,f)
+SAt = SAtree.from.fossils(tree = t, fossils = f)
 print(SAt)
 print(SAt$complete)
-```
-
-Note that the default plotting function for `SAtree` objects is `plot.asymmetric.tree` which plots a stratigraphic range representation of the tree and fossil samples, while assuming that all speciation events are asymmetric.
-
-```{r}
-plot(SAt)
-```
-
-To use a different plotting function, not that `SAtree` objects are also `phylo` objects and can still be used with all the plotting compatible with that format.
-```{r}
-ape::plot.phylo(SAt)
 ```
 
 ## Other useful functions
@@ -51,15 +40,15 @@ Other functions are present in `FossilSim` to modify trees.
 `prune.fossils` will remove all intermediate fossil samples and keep only the first and last occurrences of any species.
 
 ```{r}
-SAt_pruned = prune.fossils(SAt)
-ape::plot.phylo(SAt_pruned)
+SAt_pruned = prune.fossils(tree = SAt)
+plot(SAt_pruned)
 ```
 
 `sampled.tree.from.combined` removes all unsampled lineages from the tree, and can optionally apply a sampling probability to extant samples, or keep only a specified list of extant samples.
 
 ```{r}
-SAt_sampled = sampled.tree.from.combined(SAt)
-ape::plot.phylo(SAt_sampled)
+SAt_sampled = sampled.tree.from.combined(tree = SAt)
+plot(SAt_sampled)
 ```
 
 These two functions can be applied to any object of type `phylo`, but are designed to work on trees which include fossil samples.

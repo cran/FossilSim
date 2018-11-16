@@ -5,7 +5,7 @@ R package for simulating fossil data on phylogenetic trees under mechanistic mod
 The latest version can be installed in R using the package devtools:
 
     library(devtools)
-    install_github("rachelwarnock/fossilsim")
+    install_github("fossilsim/fossilsim")
 
 ### Quick start
 
@@ -31,11 +31,23 @@ s = sim.taxonomy(t, beta, lambda.a)
 plot(s, t, legend.position = "bottomright")
 ```
 
+### Package vignettes
+
+The following vignettes are available via CRAN and provide detailed examples:
+
+* [General introduction to the package](https://CRAN.R-project.org/package=FossilSim/vignettes/intro.html)
+* [Simulating taxonomy](https://CRAN.R-project.org/package=FossilSim/vignettes/taxonomy.html)
+* [Simulating fossils](https://CRAN.R-project.org/package=FossilSim/vignettes/fossils.html)
+* [Simulating FBD trees](https://CRAN.R-project.org/package=FossilSim/vignettes/simfbd.html)
+* [Exporting sampled ancestor trees](https://CRAN.R-project.org/package=FossilSim/vignettes/SAtree.html)
+* [Converting to paleotree format](https://CRAN.R-project.org/package=FossilSim/vignettes/paleotree.html)
+
 ### For further information and examples see the package documentation
 
 ### Contributors
-Joelle Barido-Sottani  
-Walker Pett  
-Rachel Warnock 
+Joëlle Barido-Sottani  
+Walker Pett
+Joseph O'Reilly  
+Rachel Warnock
 
 

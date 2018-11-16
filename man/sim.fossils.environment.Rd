@@ -6,7 +6,8 @@
 \usage{
 sim.fossils.environment(tree = NULL, taxonomy = NULL,
   interval.ages = NULL, max.age = NULL, strata = NULL,
-  proxy.data = NULL, PD = 0.5, DT = 0.5, PA = 0.5, root.edge = TRUE)
+  proxy.data = NULL, PD = 0.5, DT = 0.5, PA = 0.5,
+  root.edge = TRUE, use.rates = FALSE, pr.1.approx = 0.999)
 }
 \arguments{
 \item{tree}{Phylo object.}
@@ -28,6 +29,10 @@ sim.fossils.environment(tree = NULL, taxonomy = NULL,
 \item{PA}{Peak abundance parameter value or a vector of values.}
 
 \item{root.edge}{If TRUE include the root edge. Default = TRUE.}
+
+\item{use.rates}{If TRUE convert per interval sampling probability into a per interval Poisson rate. Default = FALSE.}
+
+\item{pr.1.approx}{Value used to approximate sampling probabilities = 1 when use.rates = TRUE.}
 }
 \value{
 An object of class fossils, where \code{hmin} and \code{hmax} will equal the start and end times of the corresponding interval.
@@ -41,6 +46,13 @@ where \emph{PA} is species peak abundance, \emph{PD} is preferred depth, \emph{D
 \emph{PA} is the probability of sampling an occurrence at this depth.
 \emph{DT} is the potential of a species to be found at a range of depths and is equivalent to the standard deviation.
 Although here fossil recovery is described with respect to water depth, the model could be applied in the context of any environmental gradient. \cr \cr
+The model uses a probability of collecting a fossil within a given interval, rather than a rate.
+
+To simulate discrete fossil sampling events and times within each interval we need to convert the probability into a rate
+(\code{use.rates = TRUE}). This is done using the formula \deqn{rate = -ln(1 - P(collection)/t) } where \emph{t} is the interval length.
+One caveat of this approach is that the model cannot use a probability of 1, as it would correspond to rate = infinity.
+In this instance we use an approximation for probabilities = 1 (e.g. \code{pr.1.approx = 0.999}). \cr \cr
+
 Non-uniform interval ages can be specified as a vector (\code{interval.ages}) or a uniform set of interval ages can be specified using
 maximum interval age (\code{max.age}) and the number of intervals (\code{strata}), where interval length \eqn{= max.age/strata}. \cr \cr
 A vector of values can be specified for the model parameters \emph{PA}, \emph{PD} and \emph{DT} to allow for variation across lineages.
@@ -76,7 +88,7 @@ plot(f, t, strata = strata, binned = TRUE)
 
 # simulate fossils with variable preservation across lineages
 dist = function() {runif(1)}
-PD = sim.trait.values(1, taxonomy = s, model = "innovative", dist = dist,
+PD = sim.trait.values(1, taxonomy = s, model = "independent", dist = dist,
                      change.pr = 0.1)
 f = sim.fossils.environment(taxonomy = s, interval.ages = times,
      proxy.data = wd, PD = PD, DT = 1, PA = 1)

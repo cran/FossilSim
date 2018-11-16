@@ -17,15 +17,15 @@ tips = 8
 t = ape::rtree(tips)
 # simulate fossils using fossilsim
 rate = 2
-f = sim.fossils.poisson(rate, t)  
+f = sim.fossils.poisson(rate = rate, tree = t)  
 # plot the output
-plot(f, t)
+plot(f, tree = t)
 
 ## ------------------------------------------------------------------------
 # simulate taxonomy using fossilsim
 beta = 0.5 # probability of symmetric speciation
 lambda.a = 0.1  # rate of anagenesis
-s = sim.taxonomy(t, beta, lambda.a)  
+s = sim.taxonomy(tree = t, beta = beta, lambda.a = lambda.a)  
 # plot the output
-plot(s, t, legend.position = "bottomright")
+plot(s, tree = t, legend.position = "bottomright")
 

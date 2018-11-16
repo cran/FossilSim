@@ -20,37 +20,37 @@ set.seed(123)
 lambda = 1
 mu = 0.2
 tips = 8
-t = TreeSim::sim.bd.taxa(tips, 1, lambda, mu)[[1]]
+t = TreeSim::sim.bd.taxa(n = tips, numbsim = 1, lambda = lambda, mu = mu)[[1]]
 # t is an object of class phylo
 t
 # use t$edge, t$edge.length, t$root.edge to see the tree attributes
 
 # simulate under complete budding speciation 
-s = sim.taxonomy(t) # this is equivalent to using the default parameters beta = 0, lambda_a = 0, kappa = 0
+s = sim.taxonomy(tree = t) # this is equivalent to using the default parameters beta = 0, lambda_a = 0, kappa = 0
 # s is an object of class taxonomy
 s
 
 ## ------------------------------------------------------------------------
-plot(s, t, legend.position = "topleft")
+plot(s, tree = t, legend.position = "topleft")
 
 ## ------------------------------------------------------------------------
 # simulate under complete bifurcating speciation
-s = sim.taxonomy(t, beta = 1)
-plot(s, t, legend.position = "topleft")
+s = sim.taxonomy(tree = t, beta = 1)
+plot(s, tree = t, legend.position = "topleft")
 
 ## ------------------------------------------------------------------------
 # simulate under mixed speciation
-s = sim.taxonomy(t, beta = 0.5, lambda.a = 1, kappa = 0.1)
-plot(s, t, legend.position = "topleft")
+s = sim.taxonomy(tree = t, beta = 0.5, lambda.a = 1, kappa = 0.1)
+plot(s, tree = t, legend.position = "topleft")
 
 ## ------------------------------------------------------------------------
 # simulate taxonomy without anagenetic or cryptic species
-s1 = sim.taxonomy(t, beta = 0.5)
+s1 = sim.taxonomy(tree = t, beta = 0.5)
 
 # simulate anagenetic species 
 # note this function also requires the corresponding tree object
-s2 = sim.anagenetic.species(t, s1, lambda.a = 1)
+s2 = sim.anagenetic.species(tree = t, species = s1, lambda.a = 1)
 
 # simulate cryptic species
-s3 = sim.cryptic.species(s2, kappa = 0.1)
+s3 = sim.cryptic.species(species = s2, kappa = 0.1)
 

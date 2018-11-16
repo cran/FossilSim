@@ -51,7 +51,9 @@ sim.fbd.age<-function(age, numbsim, lambda, mu, psi, frac = 1, mrca = FALSE, com
 				fossil.tips = is.extinct(tree,tol=0.000001)
 				extant.tips = tree$tip.label[!(tree$tip.label %in% fossil.tips)]
 
-				unsampled.tips = fossil.tips[!grepl("fossil",fossil.tips)]
+				sa.tips = tree$tip.label[tree$edge[,2][(tree$edge[,2] %in% 1:length(tree$tip.label)) & (tree$edge.length == 0.0)]]
+
+				unsampled.tips = fossil.tips[!(fossil.tips %in% sa.tips)]
 
 				if( frac < 1 )
 				{
@@ -94,7 +96,7 @@ sim.fbd.age<-function(age, numbsim, lambda, mu, psi, frac = 1, mrca = FALSE, com
 #' @examples
 #' n = 10
 #' numbsim = 1
-#' sim.fbd.rateshift.taxa(n,numbsim,c(2,1),c(0,0.3),c(1,0.1),c(0.3))
+#' sim.fbd.rateshift.taxa(n,numbsim, lambda = c(2,1), mu = c(0,0.3), psi = c(1,0.1), times = c(0.3))
 #' @keywords fossilized birth death
 #' @export
 sim.fbd.rateshift.taxa <- function(n, numbsim, lambda, mu, psi, times, complete = FALSE)
@@ -125,7 +127,9 @@ sim.fbd.rateshift.taxa <- function(n, numbsim, lambda, mu, psi, times, complete 
 		{
 			fossil.tips = is.extinct(tree,tol=0.000001)
 
-			unsampled.tips = fossil.tips[!grepl("fossil",fossil.tips)]
+			sa.tips = tree$tip.label[tree$edge[,2][(tree$edge[,2] %in% 1:length(tree$tip.label)) & (tree$edge.length == 0.0)]]
+
+			unsampled.tips = fossil.tips[!(fossil.tips %in% sa.tips)]
 
 			tree = ape::drop.tip(tree, unsampled.tips)
 			node.ages = n.ages(tree)
@@ -181,7 +185,9 @@ sim.fbd.taxa <- function(n, numbsim, lambda, mu, psi, frac = 1, complete = FALSE
 			fossil.tips = is.extinct(tree,tol=0.000001)
 			extant.tips = tree$tip.label[!(tree$tip.label %in% fossil.tips)]
 
-			unsampled.tips = fossil.tips[!grepl("fossil",fossil.tips)]
+			sa.tips = tree$tip.label[tree$edge[,2][(tree$edge[,2] %in% 1:length(tree$tip.label)) & (tree$edge.length == 0.0)]]
+
+			unsampled.tips = fossil.tips[!(fossil.tips %in% sa.tips)]
 
 			if( frac < 1 )
 			{

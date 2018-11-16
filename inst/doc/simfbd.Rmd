@@ -4,7 +4,7 @@ author: "Walker Pett"
 date: "`r Sys.Date()`"
 output: html_document
 vignette: >
-  %\VignetteIndexEntry{FossilSim}
+  %\VignetteIndexEntry{Simulating trees from the fossilized birth-death process}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -25,20 +25,26 @@ As in `TreeSim`, trees can be simulated  while conditioning either on the number
 These functions require the fossil sampling rate parameter `psi` as an argument, but otherwise take the same arguments as the `sim.bd.taxa` and `sim.bd.age` functions in `TreeSim`.
 
 ```{r}
-trees <- sim.fbd.taxa(n=10, numbsim=10, lambda=3, mu=2, psi=2)
+trees <- sim.fbd.taxa(n = 10, numbsim = 10, lambda = 3, mu = 2, psi = 2)
 
 plot(trees[[1]])
+```
+
+A stratigraphic range representation of the tree and fossil samples can be plotted using the `rangeplot.asymmetric` function, which assumes that all speciation events are asymmetric.
+
+```{r}
+rangeplot.asymmetric(trees[[1]])
 ```
 
 Note that when simulating a complete tree (`complete = TRUE`), tips in the resulting `SAtree` object represent extinction events, whereas they represent fossil sampling events in the tree without unsampled lineages (`complete = FALSE`).
 The `complete` field of resulting the `SAtree` object is set to the value of the `complete` function argument.
 
 ```{r}
-trees <- sim.fbd.taxa(n=10, numbsim=10, lambda=3, mu=2, psi=2, complete=T)
+trees <- sim.fbd.taxa(n = 10, numbsim = 10, lambda = 3, mu = 2, psi = 2, complete = T)
 
 print(trees[[1]]$complete)
 
-plot(trees[[1]])
+rangeplot.asymmetric(trees[[1]])
 ```
 
 ## Simulating trees from an episodic fossilized-birth death process
@@ -48,9 +54,7 @@ Apart from a vector of interval specific `psi` parameters, this function also ta
 At the moment, this function assumes the sampling fraction of extant taxa (`frac`) is equal to 1.0.
 
 ```{r}
-n = 10
-numbsim = 1
-trees = sim.fbd.rateshift.taxa(n=10, numbsim=1, lambda=c(2,1), mu=c(0,0.3), psi=c(1,0.1), times=c(0.3))
+trees = sim.fbd.rateshift.taxa(n = 10, numbsim = 1, lambda = c(2,1), mu = c(0,0.3), psi = c(1,0.1), times = c(0.3))
 
-plot(trees[[1]])
+rangeplot.asymmetric(trees[[1]])
 ```

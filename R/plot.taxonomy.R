@@ -6,7 +6,7 @@
 #'
 #' @param x Taxonomy object.
 #' @param tree Phylo object.
-#' @param show.mode Indicate speciation mode. #TODO
+#' @param show.mode Indicate speciation mode.
 #' @param show.legend Add a legend for the symbols indicating different speciation modes.
 #' @param legend.position Position of the legend. Options include \code{"bottomleft"} (default), \code{"topleft"}, \code{"bottomright"}, \code{"topright"} or a vector of length 2 with x, y coordinates.
 #' @param root.edge If TRUE include the root edge (default = TRUE).
@@ -254,8 +254,11 @@ plot.taxonomy = function(x, tree, show.mode = TRUE, show.legend = TRUE, legend.p
       }
     }
     # legend
-    if(show.legend)
-      legend(legend.position, legend=c("Budding", "Bifurcation", "Anagenesis"), pch = c(15, 16, 17))
+    if(show.legend) {
+      x = legend.position[1]
+      y = if(length(legend.position) > 1) legend.position[2] else NULL
+      legend(x = x, y = y, legend=c("Budding", "Bifurcation", "Anagenesis"), pch = c(15, 16, 17))
+    }
   }
   par(old.par)
   L <- list(type = type, use.edge.length = TRUE,
