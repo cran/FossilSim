@@ -18,7 +18,7 @@ print(trees[[1]]$complete)
 rangeplot.asymmetric(trees[[1]])
 
 ## ------------------------------------------------------------------------
-trees = sim.fbd.rateshift.taxa(n = 10, numbsim = 1, lambda = c(2,1), mu = c(0,0.3), psi = c(1,0.1), times = c(0.3))
+trees = sim.fbd.rateshift.taxa(n = 10, numbsim = 1, lambda = c(2,1), mu = c(0,0.3), psi = c(1,0.1), times = c(0,0.3))
 
 rangeplot.asymmetric(trees[[1]])
 

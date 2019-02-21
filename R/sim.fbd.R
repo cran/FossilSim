@@ -39,7 +39,7 @@ sim.fbd.age<-function(age, numbsim, lambda, mu, psi, frac = 1, mrca = FALSE, com
 		{
 			t = trees[[i]]
 			f <- sim.fossils.poisson(tree = t, rate = psi)
-			
+
 			tree = SAtree.from.fossils(t,f)
 
 			node.ages = n.ages(tree)
@@ -86,43 +86,43 @@ sim.fbd.age<-function(age, numbsim, lambda, mu, psi, frac = 1, mrca = FALSE, com
 #' is the extinction rate prior (ancestral) to time times[i].
 #' @param psi Vector of fossil sampling rates, the rate in entry i
 #' is the fossil sampling rate prior (ancestral) to time times[i].
-#' @param times Vector of mass extinction and rate shift times.
-#' Time is 0 today and increasing going backwards in time. Specify the vector as times[i]
+#' @param times Vector of mass extinction and rate shift times. Time is 0
+#' today and increasing going backwards in time. Specify the
+#' vector as times[i]<times[i+1]. times[1]=0 (today).
 #' @param complete If TRUE, the tree including the extinct lineages and
-#' non-sampled lineages is returned (so the tree has
-#' round(n/frac[1]) extant tips). If FALSE, the extinct lineages
+#' non-sampled lineages is returned. If FALSE, the extinct lineages
 #' and non-sampled lineages are suppressed.
 #' @return List of numbsim simulated SAtrees with n extant sampled tips.
 #' @examples
 #' n = 10
 #' numbsim = 1
-#' sim.fbd.rateshift.taxa(n,numbsim, lambda = c(2,1), mu = c(0,0.3), psi = c(1,0.1), times = c(0.3))
+#' sim.fbd.rateshift.taxa(n, numbsim, lambda = c(2,1), mu = c(0,0.3), psi = c(1,0.1), times = c(0,0.3))
 #' @keywords fossilized birth death
 #' @export
 sim.fbd.rateshift.taxa <- function(n, numbsim, lambda, mu, psi, times, complete = FALSE)
 {
-	if(length(lambda) != (length(times) + 1 ))
-    	stop("Length mismatch between interval ages and birth rates")
-    if(length(mu) != (length(times) + 1 ))
-    	stop("Length mismatch between interval ages and death rates")
-	if(length(psi) != (length(times) + 1 ))
-    	stop("Length mismatch between interval ages and sampling rates")
+	if(length(lambda) != length(times))
+    	stop("Length mismatch between rate shift times and birth rates")
+    if(length(mu) != length(times))
+    	stop("Length mismatch between rate shift times and death rates")
+	if(length(psi) != length(times))
+    	stop("Length mismatch between rate shift times and sampling rates")
 
-	trees = TreeSim::sim.rateshift.taxa(n, numbsim, lambda, mu, 1, times, complete = TRUE)
+	trees = TreeSim::sim.rateshift.taxa(n, numbsim, lambda, mu, rep(1, length(times)), times, complete = TRUE)
 
 	for(i in 1:length(trees))
 	{
 		t = trees[[i]]
 		origin = max(n.ages(t)) + t$root.edge
 
-		horizons = c(0, times, origin)
+		horizons = c(times, origin)
 
 		f <- sim.fossils.intervals(tree = t, interval.ages = horizons, rates = psi) # reordered
 
 		tree = SAtree.from.fossils(t,f)
 
 		node.ages = n.ages(tree)
-		
+
 		if( complete == FALSE )
 		{
 			fossil.tips = is.extinct(tree,tol=0.000001)
