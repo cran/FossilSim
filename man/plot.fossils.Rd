@@ -4,15 +4,38 @@
 \alias{plot.fossils}
 \title{Plot simulated fossils}
 \usage{
-\method{plot}{fossils}(x, tree, show.fossils = TRUE, show.tree = TRUE,
-  show.ranges = FALSE, show.strata = FALSE, strata = 1,
-  max.age = NULL, interval.ages = NULL, binned = FALSE,
-  show.axis = TRUE, show.proxy = FALSE, proxy.data = NULL,
-  show.preferred.environ = FALSE, preferred.environ = NULL,
-  show.taxonomy = FALSE, taxonomy = NULL, root.edge = TRUE,
-  hide.edge = FALSE, edge.width = 1, show.tip.label = FALSE,
-  align.tip.label = FALSE, fossil.col = 1, range.col = rgb(0, 0, 1),
-  extant.col = NULL, cex = 1.2, pch = 18, ...)
+\method{plot}{fossils}(
+  x,
+  tree,
+  show.fossils = TRUE,
+  show.tree = TRUE,
+  show.ranges = FALSE,
+  show.strata = FALSE,
+  strata = 1,
+  max.age = NULL,
+  interval.ages = NULL,
+  binned = FALSE,
+  show.axis = TRUE,
+  show.proxy = FALSE,
+  proxy.data = NULL,
+  show.preferred.environ = FALSE,
+  preferred.environ = NULL,
+  show.taxonomy = FALSE,
+  taxonomy = NULL,
+  show.unknown = FALSE,
+  root.edge = TRUE,
+  hide.edge = FALSE,
+  edge.width = 1,
+  show.tip.label = FALSE,
+  align.tip.label = FALSE,
+  reconstructed = FALSE,
+  fossil.col = 1,
+  range.col = rgb(0, 0, 1),
+  extant.col = NULL,
+  cex = 1.2,
+  pch = 18,
+  ...
+)
 }
 \arguments{
 \item{x}{Fossils object.}
@@ -37,7 +60,7 @@
 
 \item{show.axis}{If TRUE plot x-axis (default = TRUE).}
 
-\item{show.proxy}{If TRUE add profile of sampling data to plot (e.g rates in time-dependent rates model) (default = FALSE).}
+\item{show.proxy}{If TRUE add profile of sampling data to plot (e.g. rates in time-dependent rates model) (default = FALSE).}
 
 \item{proxy.data}{Vector of sampling proxy data (default = NULL). Should be as long as the number of stratigraphic intervals.}
 
@@ -49,6 +72,8 @@
 
 \item{taxonomy}{Taxonomy object.}
 
+\item{show.unknown}{If TRUE plot fossils with unknown taxonomic affiliation (i.e. sp = NA) (default = FALSE).}
+
 \item{root.edge}{If TRUE include the root edge (default = TRUE).}
 
 \item{hide.edge}{If TRUE hide the root edge but still incorporate it into the automatic timescale (default = FALSE).}
@@ -58,6 +83,8 @@
 \item{show.tip.label}{Whether to show the tip labels on the phylogeny (defaults to FALSE).}
 
 \item{align.tip.label}{A logical value or an integer. If TRUE, the tips are aligned and dotted lines are drawn between the tips of the tree and the labels. If an integer, the tips are aligned and this gives the type of the lines (following \code{lty}).}
+
+\item{reconstructed}{If TRUE plot the reconstructed tree. If fossils object contains no extant samples, the function assumes rho = 1 and includes all species at the present.}
 
 \item{fossil.col}{Colour of fossil occurrences.}
 

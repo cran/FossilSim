@@ -5,9 +5,13 @@
 \title{Create a set of BEAST2 constraints to construct a DPPDIV style fixed extant
 topology FBD analysis}
 \usage{
-fossils.to.BEAST.constraints(fossils, tree,
-  file = "BEASTconstraints.xml", complete = FALSE,
-  tree.name = "beastTree")
+fossils.to.BEAST.constraints(
+  fossils,
+  tree,
+  file = "BEASTconstraints.xml",
+  complete = FALSE,
+  tree.name = "beastTree"
+)
 }
 \arguments{
 \item{fossils}{an object of class "fossils" that corresponds to fossil
@@ -38,5 +42,5 @@ in a position below the root.
 \examples{
 t = TreeSim::sim.bd.taxa(10, 1, 0.1, 0.05)[[1]]
 f = sim.fossils.poisson(0.1, t, root.edge = FALSE)
-fossils.to.BEAST.constraints(f, t, complete = TRUE)
+fossils.to.BEAST.constraints(f, t, file = tempfile(), complete = TRUE)
 }

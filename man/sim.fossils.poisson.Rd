@@ -4,8 +4,14 @@
 \alias{sim.fossils.poisson}
 \title{Simulate fossils under a Poisson sampling model}
 \usage{
-sim.fossils.poisson(rate, tree = NULL, taxonomy = NULL,
-  root.edge = TRUE)
+sim.fossils.poisson(
+  rate,
+  tree = NULL,
+  taxonomy = NULL,
+  fossils = NULL,
+  ignore.taxonomy = FALSE,
+  root.edge = TRUE
+)
 }
 \arguments{
 \item{rate}{A single Poisson sampling rate or a vector of rates.}
@@ -13,6 +19,10 @@ sim.fossils.poisson(rate, tree = NULL, taxonomy = NULL,
 \item{tree}{Phylo object.}
 
 \item{taxonomy}{Taxonomy object.}
+
+\item{fossils}{Append fossils to to an existing fossils object.}
+
+\item{ignore.taxonomy}{Ignore species taxonomy (returns sp = NA). Default = FALSE.}
 
 \item{root.edge}{If TRUE include the root edge. Default = TRUE.}
 }
@@ -46,6 +56,16 @@ plot(f, t)
 rates = sim.trait.values(init = rate, taxonomy = s, v = 1)
 f = sim.fossils.poisson(rates, taxonomy = s)
 plot(f, t)
+
+# append fossils to an existing fossils object
+rate = 1
+f1 = sim.fossils.poisson(rate, tree = t)
+plot(f1, t)
+rate = 2
+f2 = sim.fossils.poisson(rate, tree = t, fossils = f1)
+plot(f2, t)
+f3 = sim.fossils.poisson(rate, tree = t, fossils = f2, ignore.taxonomy = TRUE)
+plot(f3, t, show.unknown = TRUE)
 
 }
 \seealso{

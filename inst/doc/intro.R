@@ -1,17 +1,17 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.width = 5, fig.height = 5
 )
 
-## ---- echo = FALSE, results = "hide", message = FALSE--------------------
+## ---- echo = FALSE, results = "hide", message = FALSE-------------------------
 library(FossilSim)
 
-## ---- echo = FALSE-------------------------------------------------------
+## ---- echo = FALSE------------------------------------------------------------
 set.seed(121)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # simulate a tree using ape
 tips = 8
 t = ape::rtree(tips)
@@ -21,7 +21,7 @@ f = sim.fossils.poisson(rate = rate, tree = t)
 # plot the output
 plot(f, tree = t)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # simulate taxonomy using fossilsim
 beta = 0.5 # probability of symmetric speciation
 lambda.a = 0.1  # rate of anagenesis

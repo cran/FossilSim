@@ -12,6 +12,8 @@
 #' @param rate A single Poisson sampling rate or a vector of rates.
 #' @param tree Phylo object.
 #' @param taxonomy Taxonomy object.
+#' @param fossils Append fossils to to an existing fossils object.
+#' @param ignore.taxonomy Ignore species taxonomy (returns sp = NA). Default = FALSE.
 #' @param root.edge If TRUE include the root edge. Default = TRUE.
 #'
 #' @return An object of class fossils.
@@ -35,12 +37,23 @@
 #' f = sim.fossils.poisson(rates, taxonomy = s)
 #' plot(f, t)
 #'
+#' # append fossils to an existing fossils object
+#' rate = 1
+#' f1 = sim.fossils.poisson(rate, tree = t)
+#' plot(f1, t)
+#' rate = 2
+#' f2 = sim.fossils.poisson(rate, tree = t, fossils = f1)
+#' plot(f2, t)
+#' f3 = sim.fossils.poisson(rate, tree = t, fossils = f2, ignore.taxonomy = TRUE)
+#' plot(f3, t, show.unknown = TRUE)
+#'
 #' @keywords Poisson sampling
 #' @seealso \code{\link{sim.fossils.intervals}}, \code{\link{sim.fossils.environment}}, \code{\link{sim.trait.values}}
 #' @export
 #'
-#' @importFrom stats rpois runif rlnorm
-sim.fossils.poisson = function(rate, tree = NULL, taxonomy = NULL, root.edge = TRUE) {
+#' @importFrom stats rpois runif rlnorm na.omit
+sim.fossils.poisson = function(rate, tree = NULL, taxonomy = NULL, fossils = NULL, ignore.taxonomy = FALSE,
+                               root.edge = TRUE) {
 
   if(is.null(tree) && is.null(taxonomy))
     stop("Specify phylo or taxonomy object")
@@ -50,6 +63,9 @@ sim.fossils.poisson = function(rate, tree = NULL, taxonomy = NULL, root.edge = T
 
   if(!is.null(taxonomy) && !"taxonomy" %in% class(taxonomy))
     stop("taxonomy must be an object of class \"taxonomy\"")
+
+  if(!is.null(fossils) && !"fossils" %in% class(fossils))
+    stop("fossils must be an object of class \"fossils\"")
 
   if(!is.null(tree) && !is.null(taxonomy))
     warning("tree and taxonomy both defined, using taxonomy")
@@ -71,6 +87,9 @@ sim.fossils.poisson = function(rate, tree = NULL, taxonomy = NULL, root.edge = T
   } else
     from.taxonomy = TRUE
 
+  if(!all( as.vector(na.omit(fossils$edge)) %in% taxonomy$edge))
+    stop("Mismatch between fossils and taxonomy objects")
+
   if(length(rate) > 1 && length(rate) != length(unique(taxonomy$sp)))
     stop("The vector of rates provided doesn't correspond to the number of species")
   else if(length(rate) == 1)
@@ -82,7 +101,10 @@ sim.fossils.poisson = function(rate, tree = NULL, taxonomy = NULL, root.edge = T
   # If FALSE hmin and hmax will equal the start and end times of the corresponding edge.
   use.exact.times = TRUE
 
-  fdf = fossils()
+  if(is.null(fossils))
+    fdf = fossils()
+  else
+    fdf = fossils
 
   lineages = unique(taxonomy$sp)
 
@@ -100,6 +122,7 @@ sim.fossils.poisson = function(rate, tree = NULL, taxonomy = NULL, root.edge = T
     rand = rpois(1, blength*rate[i])
 
     if(rand > 0) {
+      if(ignore.taxonomy) sp = NA
       h = runif(rand, min = end, max = start)
       edge = sapply(h, function(x) edges$edge[which(edges$start > x & edges$end < x)])
       if(use.exact.times) {
@@ -126,11 +149,13 @@ sim.fossils.poisson = function(rate, tree = NULL, taxonomy = NULL, root.edge = T
 #'
 #' @param tree Phylo object.
 #' @param taxonomy Taxonomy object.
+#' @param fossils Append fossils to to an existing fossils object.
 #' @param interval.ages Vector of stratigraphic interval ages, starting with the minimum age of the youngest interval and ending with the maximum age of the oldest interval.
 #' @param max.age Maximum age of the oldest stratigraphic interval.
 #' @param strata Number of stratigraphic intervals.
 #' @param rates Poisson sampling rate for each interval. The number of rates should match the number of intervals and the first entry should correspond to youngest interval.
 #' @param probabilities Probability of sampling/preservation in each interval. The number of probabilities should match the number of intervals and the first entry should correspond to youngest interval.
+#' @param ignore.taxonomy Ignore species taxonomy (returns sp = NA). Default = FALSE.
 #' @param root.edge If TRUE include the root edge. Default = TRUE.
 #' @param use.exact.times If TRUE use exact sampling times. If FALSE \code{hmin} and \code{hmax} will equal the start and end times of the corresponding interval. Default = TRUE.
 #' @return An object of class fossils.
@@ -159,13 +184,17 @@ sim.fossils.poisson = function(rate, tree = NULL, taxonomy = NULL, root.edge = T
 #' f = sim.fossils.intervals(taxonomy = s, interval.ages = times, rates = rates)
 #' plot(f, t, interval.ages = times, show.strata = TRUE)
 #'
+#' # append fossils to an existing fossils object
+#' new.rates = rates * 2
+#' f2 = sim.fossils.intervals(taxonomy = s, fossils = f, interval.ages = times, rates = new.rates)
+#'
 #' @keywords uniform fossil preservation
 #' @keywords non-uniform fossil preservation
 #' @seealso \code{\link{sim.fossils.poisson}}, \code{\link{sim.fossils.environment}}
 #' @export
-sim.fossils.intervals = function(tree = NULL, taxonomy = NULL,
+sim.fossils.intervals = function(tree = NULL, taxonomy = NULL, fossils = NULL,
                                  interval.ages = NULL, max.age = NULL, strata = NULL,
-                                 probabilities = NULL, rates = NULL,
+                                 probabilities = NULL, rates = NULL, ignore.taxonomy = FALSE,
                                  root.edge = TRUE, use.exact.times = TRUE){
 
   if(is.null(tree) && is.null(taxonomy))
@@ -176,6 +205,9 @@ sim.fossils.intervals = function(tree = NULL, taxonomy = NULL,
 
   if(!is.null(taxonomy) && !"taxonomy" %in% class(taxonomy))
     stop("taxonomy must be an object of class \"taxonomy\"")
+
+  if(!is.null(fossils) && !"fossils" %in% class(fossils))
+    stop("fossils must be an object of class \"fossils\"")
 
   if(!is.null(tree) && !is.null(taxonomy))
     warning("tree and taxonomy both defined, using taxonomy")
@@ -201,6 +233,9 @@ sim.fossils.intervals = function(tree = NULL, taxonomy = NULL,
   } else
     from.taxonomy = TRUE
 
+  if(!all( as.vector(na.omit(fossils$edge)) %in% taxonomy$edge))
+    stop("Mismatch between fossils and taxonomy objects")
+
   use.rates = FALSE
   if(!is.null(probabilities) && !is.null(rates)) {
     rates = NULL
@@ -217,7 +252,9 @@ sim.fossils.intervals = function(tree = NULL, taxonomy = NULL,
   if(is.null(taxonomy))
     taxonomy = sim.taxonomy(tree, beta = 1, root.edge = root.edge)
 
-  fdf = fossils()
+  if(is.null(fossils))
+    fdf = fossils()
+  else fdf = fossils
 
   lineages = unique(taxonomy$sp)
 
@@ -238,6 +275,7 @@ sim.fossils.intervals = function(tree = NULL, taxonomy = NULL,
       max.time = min(start, interval.ages[i+1])
 
       if(use.rates) {
+        if(ignore.taxonomy) sp = NA
         # generate k fossils from a poisson distribution
         k = rpois(1, rates[i]*(max.time - min.time))
         ages = runif(k, min.time, max.time)
@@ -285,12 +323,12 @@ sim.fossils.intervals = function(tree = NULL, taxonomy = NULL,
 #' \emph{DT} is the potential of a species to be found at a range of depths and is equivalent to the standard deviation.
 #' Although here fossil recovery is described with respect to water depth, the model could be applied in the context of any environmental gradient. \cr \cr
 #' The model uses a probability of collecting a fossil within a given interval, rather than a rate.
-#' 
+#'
 #' To simulate discrete fossil sampling events and times within each interval we need to convert the probability into a rate
 #' (\code{use.rates = TRUE}). This is done using the formula \deqn{rate = -ln(1 - P(collection)/t) } where \emph{t} is the interval length.
 #' One caveat of this approach is that the model cannot use a probability of 1, as it would correspond to rate = infinity.
 #' In this instance we use an approximation for probabilities = 1 (e.g. \code{pr.1.approx = 0.999}). \cr \cr
-#' 
+#'
 #' Non-uniform interval ages can be specified as a vector (\code{interval.ages}) or a uniform set of interval ages can be specified using
 #' maximum interval age (\code{max.age}) and the number of intervals (\code{strata}), where interval length \eqn{= max.age/strata}. \cr \cr
 #' A vector of values can be specified for the model parameters \emph{PA}, \emph{PD} and \emph{DT} to allow for variation across lineages.

@@ -1,14 +1,14 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.width = 5, fig.height = 5
 )
 
-## ---- echo = FALSE, results = "hide", message = FALSE--------------------
+## ---- echo = FALSE, results = "hide", message = FALSE-------------------------
 library(FossilSim)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # set the random number generator seed to generate the same results using the same code
 set.seed(1234)
 
@@ -26,15 +26,15 @@ rate = 3 # poisson sampling rate
 f = sim.fossils.poisson(rate = rate, tree = t)
 f
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # plot fossil occurrences
 plot(f, tree = t)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # plot stratigraphic ranges
 plot(f, tree = t, show.ranges = TRUE)
 
-## ---- eval = FALSE, include = FALSE--------------------------------------
+## ---- eval = FALSE, include = FALSE-------------------------------------------
 #  # plot stratigraphic ranges only
 #  plot(f, tree = t, show.ranges = TRUE, show.fossils = FALSE, show.tree = FALSE)
 #  # add stratigraphic intervals
@@ -42,7 +42,7 @@ plot(f, tree = t, show.ranges = TRUE)
 #  # more tips on plotting strata
 #  # http://simpson-carl.github.io/articles/15/timescales.to.base
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # simulate taxonomy under mixed speciation
 beta = 0.5 # probability of symmetric speciation
 lambda.a = 1.2 # rate of anagenetic speciation
@@ -55,7 +55,7 @@ f
 # plot the output and color fossils by taxonomy
 plot(f, tree = t, taxonomy = s, show.taxonomy = TRUE)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # define max interval age based on tree age
 max.age = tree.max(t)
 
@@ -71,7 +71,7 @@ f = sim.fossils.intervals(tree = t, rates = rates, max.age = max.age, strata = s
 # plot the output
 plot(f, tree = t, show.strata = TRUE, strata = strata)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # the following will sample a random set of interval ages between 0 and max.age
 times = c(0, sort(runif(3, min = 0, max = max.age)), max.age)
 
@@ -84,7 +84,7 @@ f = sim.fossils.intervals(tree = t, rates = rates, interval.ages = times)
 # plot the output and show sampling or proxy data
 plot(f, tree = t, show.strata = TRUE, interval.ages = times, show.proxy = TRUE, proxy = rates)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # define max interval age based on tree age
 max.age = tree.max(t)
 
@@ -100,7 +100,7 @@ f = sim.fossils.intervals(tree = t, probabilities = probabilities, max.age = max
 # plot the output
 plot(f, tree = t, show.strata = TRUE, strata = strata)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # simulate fossils
 f = sim.fossils.intervals(tree = t, probabilities = probabilities, max.age = max.age, strata = strata, use.exact.times = FALSE)
 f
@@ -108,7 +108,7 @@ f
 # plot the output
 plot(f, tree = t, show.strata = TRUE, strata = strata)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # simulate fossils
 f = sim.fossils.poisson(tree = t, rate = 3)
 
@@ -118,7 +118,7 @@ f = sim.interval.ages(fossils = f, tree = t, max.age = max.age, strata = strata,
 # plot the output
 plot(f, tree = t, show.strata = TRUE, strata = strata)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # define a set of colors for 4 species
 # color palette chosen using RColorBrewer
 cols = c("#E41A1C", "#377EB8", "#984EA3", "#4DAF4A") # red, blue, purple, green
@@ -147,7 +147,7 @@ PD = -4
 PA = 0.5
 curve(response.curve(x, PD, DT, PA), -6, -2.2, add = TRUE, lwd = 1.5, col = cols[4])
 
-## ---- fig.show="hold"----------------------------------------------------
+## ---- fig.show="hold"---------------------------------------------------------
 # define the interval parameters
 strata = 20
 times = seq(0, tree.max(t), length.out = strata+1)
@@ -197,7 +197,7 @@ f = sim.fossils.environment(tree = t, interval.ages = times, proxy.data = wd, PD
 # plot output
 plot(f, tree = t, interval.ages = times, show.strata = TRUE, show.proxy = TRUE, proxy.data = wd, show.preferred.environ = TRUE, preferred.environ = PD, fossil.col = cols[4])
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # define the initial rate at the root or origin
 rate = 1 
 
@@ -212,7 +212,7 @@ f = sim.fossils.poisson(tree = t, rate = rates)
 # plot the output
 plot(f, tree = t)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # define the initial rate at the root or origin
 rate = 1
 
@@ -229,7 +229,7 @@ f = sim.fossils.poisson(tree = t, rate = rates)
 # plot the output
 plot(f, tree = t)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # define the initial value at the root or origin
 rate = 1
 
@@ -249,7 +249,7 @@ f = sim.fossils.poisson(tree = t, rate = rates)
 # plot the output
 plot(f, tree = t)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # define constant values for preferred depth and depth tolerance
 PD = 2
 DT = 0.5
@@ -270,7 +270,7 @@ f = sim.fossils.environment(tree = t, interval.ages = times, proxy.data = wd, PD
 plot(f, tree = t, show.strata = TRUE, interval.ages = times)
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # simulate fossils
 f = sim.fossils.poisson(tree = t, rate = rates)
 

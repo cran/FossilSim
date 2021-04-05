@@ -1,18 +1,18 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.width = 5, fig.height = 5
 )
 
-## ---- echo = FALSE, results = "hide", message = FALSE--------------------
+## ---- echo = FALSE, results = "hide", message = FALSE-------------------------
 library(FossilSim)
 
-## ----echo=FALSE, out.width = "80%", fig.cap = cap------------------------
+## ----echo=FALSE, out.width = "80%", fig.cap = cap-----------------------------
 knitr::include_graphics("speciation_types.jpg")
 cap = "**Fig. 1**. Three different modes of speciation that can be simulated using FossilSim. Budding and bifurcation are also referred to as asymmetric and symmetric speciation."
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # set the random number generator seed to generate the same results using the same code
 set.seed(123)
 
@@ -30,20 +30,20 @@ s = sim.taxonomy(tree = t) # this is equivalent to using the default parameters 
 # s is an object of class taxonomy
 s
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 plot(s, tree = t, legend.position = "topleft")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # simulate under complete bifurcating speciation
 s = sim.taxonomy(tree = t, beta = 1)
 plot(s, tree = t, legend.position = "topleft")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # simulate under mixed speciation
 s = sim.taxonomy(tree = t, beta = 0.5, lambda.a = 1, kappa = 0.1)
 plot(s, tree = t, legend.position = "topleft")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # simulate taxonomy without anagenetic or cryptic species
 s1 = sim.taxonomy(tree = t, beta = 0.5)
 
