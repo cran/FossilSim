@@ -7,14 +7,15 @@ t = ape::rtree(6)
 f = sim.fossils.poisson(rate = 2, tree = t)
 
 SAt = SAtree.from.fossils(tree = t, fossils = f)
-print(SAt)
-print(SAt$complete)
+print(SAt$tree)
+print(SAt$fossils)
+print(SAt$tree$complete)
 
 ## -----------------------------------------------------------------------------
-SAt_pruned = prune.fossils(tree = SAt)
+SAt_pruned = prune.fossils(tree = SAt$tree)
 plot(SAt_pruned)
 
 ## -----------------------------------------------------------------------------
-SAt_sampled = sampled.tree.from.combined(tree = SAt)
+SAt_sampled = sampled.tree.from.combined(tree = SAt$tree)
 plot(SAt_sampled)
 
