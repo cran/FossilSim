@@ -5,7 +5,7 @@ knitr::opts_chunk$set(
   fig.width = 5, fig.height = 5
 )
 
-## ---- echo = FALSE, results = "hide", message = FALSE-------------------------
+## ----echo = FALSE, results = "hide", message = FALSE--------------------------
 library(FossilSim)
 
 ## -----------------------------------------------------------------------------
@@ -34,7 +34,7 @@ plot(f, tree = t)
 # plot stratigraphic ranges
 plot(f, tree = t, show.ranges = TRUE)
 
-## ---- eval = FALSE, include = FALSE-------------------------------------------
+## ----eval = FALSE, include = FALSE--------------------------------------------
 #  # plot stratigraphic ranges only
 #  plot(f, tree = t, show.ranges = TRUE, show.fossils = FALSE, show.tree = FALSE)
 #  # add stratigraphic intervals
@@ -147,7 +147,7 @@ PD = -4
 PA = 0.5
 curve(response.curve(x, PD, DT, PA), -6, -2.2, add = TRUE, lwd = 1.5, col = cols[4])
 
-## ---- fig.show="hold"---------------------------------------------------------
+## ----fig.show="hold"----------------------------------------------------------
 # define the interval parameters
 strata = 20
 times = seq(0, tree.max(t), length.out = strata+1)

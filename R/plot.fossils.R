@@ -33,7 +33,7 @@
 #' @param edge.width A numeric vector giving the width of the branches of the plotted phylogeny. These are taken to be in the same order as the component edge of \code{tree}. If fewer widths are given than the number of edges, then the values are recycled.
 #' @param show.tip.label Whether to show the tip labels on the phylogeny (defaults to FALSE).
 #' @param align.tip.label A logical value or an integer. If TRUE, the tips are aligned and dotted lines are drawn between the tips of the tree and the labels. If an integer, the tips are aligned and this gives the type of the lines (following \code{lty}).
-#' @param fossil.col Colour of fossil occurrences.
+#' @param fossil.col Colour of fossil occurrences. A vector equal to the length of the fossils object can be used to assign different colours.
 #' @param range.col Colour of stratigraphic ranges.
 #' @param extant.col Colour of extant samples. If show.taxonomy = TRUE extant.col will be ignored.
 #' @param cex Numeric value giving the factor used to scale the points representing the fossils when \code{show.fossils = TRUE}.
@@ -85,7 +85,7 @@ plot.fossils = function(x, tree, show.fossils = TRUE, show.tree = TRUE, show.ran
                         # tree appearance
                         root.edge = TRUE, hide.edge = FALSE, edge.width = 1, show.tip.label = FALSE, align.tip.label = FALSE, reconstructed = FALSE,
                         # fossil appearance
-                        fossil.col = 1, range.col = rgb(0,0,1), extant.col = NULL, cex = 1.2, pch = 18, ...) {
+                        fossil.col = 1, range.col = rgb(0,0,1), extant.col = 1, cex = 1.2, pch = 18, ...) {
 
   fossils = x
 
@@ -103,7 +103,6 @@ plot.fossils = function(x, tree, show.fossils = TRUE, show.tree = TRUE, show.ran
   adj = NULL
   srt = 0
 
-  if(is.null(extant.col)) extant.col = fossil.col
   if(!show.tree) align.tip.label = TRUE
 
   if(!(is.fossils(fossils)))
@@ -392,9 +391,7 @@ plot.fossils = function(x, tree, show.fossils = TRUE, show.tree = TRUE, show.ran
         }
       }
 
-      if (extant.col != fossil.col){
-        fossils$col[which(fossils$h < tol)] = extant.col
-      }
+      fossils$col[which(fossils$h < tol)] = extant.col
 
       if(show.fossils || show.ranges){
         if(binned) {
@@ -516,7 +513,7 @@ plot.fossils = function(x, tree, show.fossils = TRUE, show.tree = TRUE, show.ran
     }
   }
 
-  par(old.par)
+  if(!is.na(old.par[1])) par(old.par)
   L <- list(type = type, use.edge.length = TRUE,
             node.pos = NULL, node.depth = node.depth, show.tip.label = show.tip.label,
             show.node.label = FALSE, font = font, cex = cex,

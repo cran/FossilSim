@@ -31,7 +31,7 @@
   reconstructed = FALSE,
   fossil.col = 1,
   range.col = rgb(0, 0, 1),
-  extant.col = NULL,
+  extant.col = 1,
   cex = 1.2,
   pch = 18,
   ...
@@ -86,7 +86,7 @@
 
 \item{reconstructed}{If TRUE plot the reconstructed tree. If fossils object contains no extant samples, the function assumes rho = 1 and includes all species at the present.}
 
-\item{fossil.col}{Colour of fossil occurrences.}
+\item{fossil.col}{Colour of fossil occurrences. A vector equal to the length of the fossils object can be used to assign different colours.}
 
 \item{range.col}{Colour of stratigraphic ranges.}
 

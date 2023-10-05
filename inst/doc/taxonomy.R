@@ -5,7 +5,7 @@ knitr::opts_chunk$set(
   fig.width = 5, fig.height = 5
 )
 
-## ---- echo = FALSE, results = "hide", message = FALSE-------------------------
+## ----echo = FALSE, results = "hide", message = FALSE--------------------------
 library(FossilSim)
 
 ## ----echo=FALSE, out.width = "80%", fig.cap = cap-----------------------------
