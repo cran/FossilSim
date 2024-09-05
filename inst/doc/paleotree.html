@@ -11,7 +11,7 @@
 
 <meta name="author" content="Joelle Barido-Sottani" />
 
-<meta name="date" content="2024-04-29" />
+<meta name="date" content="2024-09-05" />
 
 <title>Converting from and to paleotree format</title>
 
@@ -353,7 +353,7 @@ display: none;
 <h1 class="title toc-ignore">Converting from and to paleotree
 format</h1>
 <h4 class="author">Joelle Barido-Sottani</h4>
-<h4 class="date">2024-04-29</h4>
+<h4 class="date">2024-09-05</h4>
 
 </div>
 
@@ -372,10 +372,92 @@ of the corresponding <code>phylo</code>, <code>taxonomy</code> and
 
 converted_record = paleotree.record.to.fossils(record = record)
 converted_record</code></pre>
+<pre><code>## $tree
+## 
+## Phylogenetic tree with 31 tips and 30 internal nodes.
+## 
+## Tip labels:
+##   t1, t3, t7, t11, t9, t13, ...
+## Node labels:
+##   32, 33, 34, 35, 36, 37, ...
+## 
+## Rooted; includes branch lengths.
+## 
+## $fossils
+##    sp edge     hmin     hmax
+## 1   1    1 971.9145 971.9145
+## 2   1    1 973.3466 973.3466
+## 3   1    1 987.4003 987.4003
+## 4   1   33 989.7576 989.7576
+## 5   2    2 966.6233 966.6233
+## 6  28   28 949.1969 949.1969
+## 7  28   60 964.0159 964.0159
+## 8  28   60 970.8105 970.8105
+## 9  27   27 971.4643 971.4643
+## 10 27   27 971.6289 971.6289
+## ...
+## Fossil record with 29 occurrences representing 15 species
+## Fossils record simulated from or assigned to an existing taxonomy 
+## 
+## $taxonomy
+##    sp edge parent     start      end mode cryptic cryptic.id
+## 1   1    1     NA  988.7071 971.8536    r   FALSE          1
+## 2   1   33     NA  990.2402 988.7071    r   FALSE          1
+## 3   1   32     NA 1000.0000 990.2402    r   FALSE          1
+## 4  31   31      1  990.2402 987.1709    b   FALSE         31
+## 5   2    2      1  970.5744 965.5648    b   FALSE          2
+## 6   2   37      1  972.4283 970.5744    b   FALSE          2
+## 7   2   36      1  973.6627 972.4283    b   FALSE          2
+## 8   2   35      1  974.2120 973.6627    b   FALSE          2
+## 9   2   34      1  988.7071 974.2120    b   FALSE          2
+## 10 28   28      2  956.5642 941.7118    b   FALSE         28
+## 11 28   61      2  960.3618 956.5642    b   FALSE         28
+## 12 28   60      2  974.2120 960.3618    b   FALSE         28
+## 13 27   27      2  973.6627 961.2136    b   FALSE         27
+## 14 26   26      2  972.4283 968.7297    b   FALSE         26
+## 15  3    3      2  962.3386 952.6071    b   FALSE          3
+## 16  3   40      2  967.5172 962.3386    b   FALSE          3
+## 17  3   39      2  969.0815 967.5172    b   FALSE          3
+## 18  3   38      2  970.5744 969.0815    b   FALSE          3
+## 19 17   17      3  940.4658 940.4620    b   FALSE         17
+## 20 17   53      3  962.4451 940.4658    b   FALSE         17
+## 21 17   52      3  969.0815 962.4451    b   FALSE         17
+## 22  5    5      3  959.9962 959.2716    b   FALSE          5
+## 23  5   41      3  967.5172 959.9962    b   FALSE          5
+## 24 19   19     17  954.3532 953.3409    b   FALSE         19
+## 25 19   56     17  956.8053 954.3532    b   FALSE         19
+## 26 19   55     17  958.6901 956.8053    b   FALSE         19
+## 27 19   54     17  962.4451 958.6901    b   FALSE         19
+## 28  4    4      3  962.3386 955.0158    b   FALSE          4
+## 29 30   30     28  960.3618 956.9353    b   FALSE         30
+## 30  6    6      5  958.4771 954.6815    b   FALSE          6
+## 31  6   42      5  959.9962 958.4771    b   FALSE          6
+## 32 25   25     19  958.6901 958.4241    b   FALSE         25
+## 33  7    7      6  953.7851 951.0418    b   FALSE          7
+## 34  7   46      6  953.8828 953.7851    b   FALSE          7
+## 35  7   45      6  957.5866 953.8828    b   FALSE          7
+## 36  7   44      6  957.8415 957.5866    b   FALSE          7
+## 37  7   43      6  958.4771 957.8415    b   FALSE          7
+## 38 16   16      7  957.8415 949.9326    b   FALSE         16
+## 39 15   15      7  957.5866 950.6253    b   FALSE         15
+## 40 21   21     19  951.5603 947.1416    b   FALSE         21
+## 41 21   57     19  956.8053 951.5603    b   FALSE         21
+## 42 29   29     28  956.5642 956.0796    b   FALSE         29
+## 43 20   20     19  954.3532 940.6825    b   FALSE         20
+## 44  9    9      7  950.7111 942.7013    b   FALSE          9
+## 45  9   47      7  953.8828 950.7111    b   FALSE          9
+## 46  8    8      7  953.7851 946.9731    b   FALSE          8
+## 47 22   22     21  948.6775 942.2671    b   FALSE         22
+## 48 22   58     21  951.5603 948.6775    b   FALSE         22
+## 49 10   10      9  946.9941 944.0227    b   FALSE         10
+## 50 10   49      9  949.1859 946.9941    b   FALSE         10
+## ...
+## Taxonomy representing 31 species across 61 edges.</code></pre>
 <p>If the <code>paleotree</code> record is fully extinct, i.e contains
 no extant samples, the age of the record will be encoded in the field
 <code>origin.time</code> of the tree.</p>
 <pre class="r"><code>converted_record$tree$origin.time</code></pre>
+<pre><code>## [1] 1000</code></pre>
 <p>Similarly, converting from the <code>FossilSim</code> objects to
 <code>paleotree</code> format is done using the
 <code>fossils.to.paleotree.record</code> function, which requires a
@@ -387,6 +469,98 @@ f = sim.fossils.poisson(rate = 2, tree = t)
 
 converted_record = fossils.to.paleotree.record(fossils = f, tree = t)
 converted_record</code></pre>
+<pre><code>## $t8
+## $t8$taxa.data
+##    taxon.id ancestor.id   orig.time    ext.time still.alive  looks.like 
+##   1.0000000          NA   1.3951422   0.9213295   0.0000000   1.0000000 
+## 
+## $t8$sampling.times
+## numeric(0)
+## 
+## 
+## $t6
+## $t6$taxa.data
+##    taxon.id ancestor.id   orig.time    ext.time still.alive  looks.like 
+##   2.0000000   1.0000000   0.9213295   0.5870906   0.0000000   2.0000000 
+## 
+## $t6$sampling.times
+## numeric(0)
+## 
+## 
+## $t5
+## $t5$taxa.data
+##    taxon.id ancestor.id   orig.time    ext.time still.alive  looks.like 
+##   3.0000000   1.0000000   0.9213295   0.4150379   0.0000000   3.0000000 
+## 
+## $t5$sampling.times
+## numeric(0)
+## 
+## 
+## $t9
+## $t9$taxa.data
+##    taxon.id ancestor.id   orig.time    ext.time still.alive  looks.like 
+##    4.000000          NA    1.395142    1.052488    0.000000    4.000000 
+## 
+## $t9$sampling.times
+## [1] 1.169976 1.062755
+## 
+## 
+## $t4
+## $t4$taxa.data
+##    taxon.id ancestor.id   orig.time    ext.time still.alive  looks.like 
+##   5.0000000   4.0000000   1.0524875   0.3692032   0.0000000   5.0000000 
+## 
+## $t4$sampling.times
+## [1] 0.9279696 0.4424305
+## 
+## 
+## $t10
+## $t10$taxa.data
+##    taxon.id ancestor.id   orig.time    ext.time still.alive  looks.like 
+##    6.000000    4.000000    1.052488    1.040256    0.000000    6.000000 
+## 
+## $t10$sampling.times
+## numeric(0)
+## 
+## 
+## $t3
+## $t3$taxa.data
+##    taxon.id ancestor.id   orig.time    ext.time still.alive  looks.like 
+##   7.0000000   6.0000000   1.0402556   0.4318103   0.0000000   7.0000000 
+## 
+## $t3$sampling.times
+## [1] 0.6594577
+## 
+## 
+## $t11
+## $t11$taxa.data
+##    taxon.id ancestor.id   orig.time    ext.time still.alive  looks.like 
+##   8.0000000   6.0000000   1.0402556   0.6050447   0.0000000   8.0000000 
+## 
+## $t11$sampling.times
+## [1] 0.9238745
+## 
+## 
+## $t1
+## $t1$taxa.data
+##    taxon.id ancestor.id   orig.time    ext.time still.alive  looks.like 
+##   9.0000000   8.0000000   0.6050447   0.3302180   0.0000000   9.0000000 
+## 
+## $t1$sampling.times
+## numeric(0)
+## 
+## 
+## $t2
+## $t2$taxa.data
+##    taxon.id ancestor.id   orig.time    ext.time still.alive  looks.like 
+##  10.0000000   8.0000000   0.6050447   0.0000000   1.0000000  10.0000000 
+## 
+## $t2$sampling.times
+## [1] 0.4005886 0.3860503 0.0000000
+## 
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;fossilRecordSimulation&quot;</code></pre>
 </div>
 
 

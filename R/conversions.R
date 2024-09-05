@@ -92,7 +92,7 @@ reconstructed.tree.fossils.objects = function(fossils, tree, rho = 1){
   if(!is.null(tree) && !"phylo" %in% class(tree))
     stop("tree must be an object of class \"phylo\"")
 
-  if(!is.null(fossils) && !"fossils" %in% class(fossils))
+  if(!is.null(fossils) && !is.fossils(fossils))
     stop("fossils must be an object of class \"fossils\"")
 
   if(!(rho >= 0 && rho <= 1))
@@ -140,7 +140,7 @@ reconstructed.tree.fossils.objects = function(fossils, tree, rho = 1){
       s1 = ape::extract.clade(samp.tree,anc)$tip.label
       s2 = no.sa.tree$tip.label[which(no.sa.tree$tip.label %in% s1)]
 
-      # assign fossils to nearest descendent node in the tree
+      # assign fossils to nearest descendant node in the tree
       if(length(s2) > 1){
         j = ape::getMRCA(no.sa.tree,s2)
       } else { # i is SA on terminal branch
@@ -250,7 +250,6 @@ beast.fbd.format = function(tree, fossils, rho = 1, sampled_tips = NULL, ...) {
 #' The label assigned to the parent of the origin or root will be zero.
 #'
 #' @param record fossilRecordSimulation object.
-#' @param alphanumeric If TRUE function will return alphanumeric species labels (i.e. species labels contain the "t" prefix) (default). If FALSE function will return numeric only species labels.
 #' @return A list containing the converted tree, taxonomy and fossils
 #' @examples
 #' if (requireNamespace("paleotree", quietly = TRUE)) {
@@ -269,7 +268,7 @@ beast.fbd.format = function(tree, fossils, rho = 1, sampled_tips = NULL, ...) {
 #' @seealso \code{\link{taxonomy}}, \code{\link{fossils}}, \code{\link{fossils.to.paleotree.record}}
 # NB: modes not branch specific
 # NB: cryptic speciation: parent id is true parent, ie can be = cryptic id
-paleotree.record.to.fossils = function(record, alphanumeric = TRUE) {
+paleotree.record.to.fossils = function(record) {
   # check that paleotree is installed - should be but you never know
   if (!requireNamespace("paleotree", quietly = TRUE)) {
     stop("Paleotree needed for this function to work. Please install it.", call. = FALSE)
@@ -367,18 +366,19 @@ paleotree.record.to.fossils = function(record, alphanumeric = TRUE) {
                                             hmin = sort(record[[i]]$sampling.times), hmax = sort(record[[i]]$sampling.times),
                                             stringsAsFactors = F))
   }
+  
+  tip_idxs = 1:length(tree$tip.label)
+  names(tip_idxs) = tree$tip.label
+  
+  fossildf$sp = tip_idxs[fossildf$sp]
+  taxonomy$sp = tip_idxs[taxonomy$sp]
+  taxonomy$cryptic.id = tip_idxs[taxonomy$cryptic.id]
+  taxonomy$parent = tip_idxs[taxonomy$parent]
 
   row.names(taxonomy) = NULL
   row.names(fossildf) = NULL
   fossildf = as.fossils(fossildf, TRUE)
   taxonomy = as.taxonomy(taxonomy)
-
-  if(!alphanumeric){
-    fossildf$sp = gsub("t", "", fossildf$sp)
-    taxonomy$sp = gsub("t", "", taxonomy$sp)
-    taxonomy$cryptic.id = gsub("t", "", taxonomy$cryptic.id)
-    taxonomy$parent = gsub("t", "", taxonomy$parent)
-  }
 
   tree$root.edge = root_time - tree$root.time
   tree$origin.time = root_time
