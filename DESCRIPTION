@@ -1,7 +1,7 @@
 Package: FossilSim
 Type: Package
 Title: Simulation and Plots for Fossil and Taxonomy Data
-Version: 2.4.0
+Version: 2.4.1
 Authors@R: c(person("Rachel", "Warnock", email="rachel.warnock@bsse.ethz.ch", role=c("aut","cph")), 
   person("Joelle", "Barido-Sottani", email="joelle.barido-sottani@m4x.org",role=c("aut","cre","cph")), 
   person("Walker", "Pett",role=c("aut","cph")), person("O'Reilly", "Joseph",role=c("aut","cph")),
@@ -10,7 +10,7 @@ Description: Simulating and plotting taxonomy and fossil data on phylogenetic tr
     models of speciation, preservation and sampling.
 License: GPL-3
 RoxygenNote: 7.3.2
-Imports: ape, ggtree, ggplot2, tidytree, methods, rlang,
+Imports: ape, ggtree, ggfun, ggplot2, tidytree, methods, rlang,
 Suggests: paleotree, knitr, rmarkdown, devtools, TreeSim, treeio,
         ggrepel
 VignetteBuilder: knitr
@@ -18,7 +18,7 @@ Language: en-GB
 Encoding: UTF-8
 Depends: R (>= 2.10)
 NeedsCompilation: no
-Packaged: 2024-09-05 12:01:40 UTC; barido
+Packaged: 2024-10-02 11:58:39 UTC; barido
 Author: Rachel Warnock [aut, cph],
   Joelle Barido-Sottani [aut, cre, cph],
   Walker Pett [aut, cph],
@@ -26,4 +26,4 @@ Author: Rachel Warnock [aut, cph],
   Ugnė Stolz [aut, cph]
 Maintainer: Joelle Barido-Sottani <joelle.barido-sottani@m4x.org>
 Repository: CRAN
-Date/Publication: 2024-09-05 19:40:02 UTC
+Date/Publication: 2024-10-02 20:30:02 UTC
