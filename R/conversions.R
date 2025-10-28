@@ -58,8 +58,10 @@ sampled.tree.from.combined = function(tree, rho = 1, sampled_tips = NULL) {
 #' @param tree Tree object.
 #' @param fossils Fossils object.
 #' @param rho Extant species sampling probability. Default = 1, will be disregarded if fossils object already contains extant samples.
+#' @param tip_order Order of indexes to assign to the tips in the SA tree, either `oldest_first` (by default, indexes increase towards the present) or `youngest_first` 
+#' (indexes increase towards the past).
 #'
-#' @return A list containing the tree and fossil objects.
+#' @return A list containing the reconstructed SA tree and fossil objects.
 #'
 #' @examples
 #' # simulate tree
@@ -87,7 +89,7 @@ sampled.tree.from.combined = function(tree, rho = 1, sampled_tips = NULL) {
 #'
 #' @export
 # function to generate tree and corresponding fossil object for the reconstructed tree
-reconstructed.tree.fossils.objects = function(fossils, tree, rho = 1){
+reconstructed.tree.fossils.objects = function(fossils, tree, rho = 1, tip_order = c("oldest_first", "youngest_first")){
 
   if(!is.null(tree) && !"phylo" %in% class(tree))
     stop("tree must be an object of class \"phylo\"")
@@ -109,7 +111,7 @@ reconstructed.tree.fossils.objects = function(fossils, tree, rho = 1){
   }
 
   # create SAtree object
-  sa.tree = SAtree.from.fossils(tree, fossils)$tree
+  sa.tree = SAtree.from.fossils(tree, fossils, tip_order = tip_order)$tree
 
   # match samp_tips and sa.tree tip labels
   if(!is.null(samp_tips)){
@@ -171,6 +173,8 @@ reconstructed.tree.fossils.objects = function(fossils, tree, rho = 1){
 }
 
 #' Removes all intermediate fossils from a combined tree and labels the first and last fossils of each lineage.
+#' 
+#' First and last are based on the order used in the `\link{SAtree.from.fossils}` function, i.e. youngest first or oldest first.
 #' Can be used with sampled or complete trees. If only one fossil is present for a particular species it is labelled as first.
 #'
 #' @param tree Combined tree with fossils.
@@ -204,10 +208,11 @@ prune.fossils = function(tree) {
   split_names = cbind(sub("_[^_]*$","",tree$tip.label),sub("^.+_","",tree$tip.label))
   for(name in unique(split_names[,1])) {
     idx = which(split_names[,1] == name)
+    mn = min(split_names[idx,2])
     mx = max(split_names[idx,2])
     for(id in idx) {
-      if(split_names[id,2] == 1) tree$tip.label[id] = paste0(name,"_first") # 1 corresponds to oldest sample in that lineage
-      else if(mx >1 && split_names[id,2] == mx) tree$tip.label[id] = paste0(name,"_last") # earliest sample
+      if(split_names[id,2] == mn) tree$tip.label[id] = paste0(name,"_first")
+      else if(mx > mn && split_names[id,2] == mx) tree$tip.label[id] = paste0(name,"_last")
       else remove_tips = c(remove_tips, id) # intermediate sample, to remove
     }
   }
@@ -216,13 +221,16 @@ prune.fossils = function(tree) {
   tree
 }
 
-#' Transforms a tree and fossils into a sampled tree in beast-usable format and writes it in Newick format.
-#' Designed to work with FBD.
+#' Transforms a tree and fossils into a sampled tree in BEAST-usable format and writes it in Newick format.
+#'
+#' For each species, removes all the intermediate fossils and leave only the youngest and oldest. The oldest and youngest of each species will be
+#' labelled according to the `tip_order` argument.
 #'
 #' @param tree Complete tree.
 #' @param fossils fossils dataframe.
 #' @param rho Sampling probability of extant tips. Default 1, will be disregarded if sampled_tips is not null.
 #' @param sampled_tips List of tip labels corresponding to sampled extant tips.
+#' @param tip_order Order of indexes to assign to the tips, either `oldest_first` (by default, first = oldest and last = youngest) or `youngest_first` (reversed).
 #' @param ... Additional parameters will be passed to ape::write.tree
 #' @return Output of write.tree.
 #' @examples
@@ -238,8 +246,8 @@ prune.fossils = function(tree) {
 #' beast.fbd.format(t, f, file="example.tre") # output in file
 #' }
 #' @export
-beast.fbd.format = function(tree, fossils, rho = 1, sampled_tips = NULL, ...) {
-  proc_tree = prune.fossils(sampled.tree.from.combined(SAtree.from.fossils(tree,fossils)$tree, rho = rho, sampled_tips = sampled_tips))
+beast.fbd.format = function(tree, fossils, rho = 1, sampled_tips = NULL, tip_order = "oldest_first", ...) {
+  proc_tree = prune.fossils(sampled.tree.from.combined(SAtree.from.fossils(tree, fossils, tip_order = tip_order)$tree, rho = rho, sampled_tips = sampled_tips))
   ape::write.tree(proc_tree, ...)
 }
 

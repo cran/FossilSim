@@ -35,12 +35,12 @@ plot(f, tree = t)
 plot(f, tree = t, show.ranges = TRUE)
 
 ## ----eval = FALSE, include = FALSE--------------------------------------------
-#  # plot stratigraphic ranges only
-#  plot(f, tree = t, show.ranges = TRUE, show.fossils = FALSE, show.tree = FALSE)
-#  # add stratigraphic intervals
-#  plot(f, tree = t, show.strata = TRUE, strata = 4)
-#  # more tips on plotting strata
-#  # http://simpson-carl.github.io/articles/15/timescales.to.base
+# # plot stratigraphic ranges only
+# plot(f, tree = t, show.ranges = TRUE, show.fossils = FALSE, show.tree = FALSE)
+# # add stratigraphic intervals
+# plot(f, tree = t, show.strata = TRUE, strata = 4)
+# # more tips on plotting strata
+# # http://simpson-carl.github.io/articles/15/timescales.to.base
 
 ## -----------------------------------------------------------------------------
 # simulate taxonomy under mixed speciation
